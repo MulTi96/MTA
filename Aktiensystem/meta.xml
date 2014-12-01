@@ -1,3 +1,4 @@
 <meta>
-  <script src="aktien_server.lua"/>
+	<script src="aktien_server.lua"/>
+	<script src="aktien_client.lua" type="client"/>
 </meta>

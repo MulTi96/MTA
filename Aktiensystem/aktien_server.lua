@@ -9,6 +9,9 @@ AktienVars = {}
 AktienVars["Google"]   = {}
 AktienVars["Facebook"] = {}
 
+local aktienRefreshTable = {}
+
+
 local refreshCycle = 60000 -- 1 Minute
 
 function loadAktien()
@@ -27,6 +30,11 @@ function loadAktien()
 					
 					for _, variable in pairs(json["ResultSet"]["Result"]) do 
 					
+						
+						if not(variable["exchDisp"] == "NASDAQ" and not(AktienVars[data.searchname].exchDisp == "NASDAQ"))then 
+							return
+						end
+						
 						AktienVars[data.searchname] = {
 							
 								searchname = data.searchname,
@@ -57,10 +65,13 @@ function loadAktien()
 									Name     			= tableVars.fullname,
 									Symbol       		= json_data["Symbol"],
 									LastTradePriceOnly  = json_data["LastTradePriceOnly"],
-									AktienChangeProzent = json_data["Change"],
-									LastTradeDate       = json_data["LastTradeDate"],
+									ChangeAktienProzent = json_data["PercentChange"],
 									
 								}
+								
+								aktienRefreshTable[json_data["Symbol"]] = {}
+								aktienRefreshTable[json_data["Symbol"]]["LastTradePriceOnly"] = json_data["LastTradePriceOnly"];
+								aktienRefreshTable[json_data["Symbol"]]["PercentChange"] 	  = json_data["PercentChange"];
 								
 								AktienVars[data.searchname].RefreshTimer = setTimer(refreshAktien, refreshCycle, -1, data.searchname);
 								
@@ -74,37 +85,61 @@ function loadAktien()
 end
 loadAktien();
 
+function loadServerAktien(player)	
+	triggerClientEvent(player, "loadClientAktien", player, AktienVars);
+end
+addEvent("loadAktienServer", true)	
+addEventHandler("loadAktienServer", root, loadServerAktien)
+
+addEvent("buyAktie", true)
+addEventHandler("buyAktie", root, function(player, unternehmen, price, prozent)
+	
+	local opr;
+	local aktienprice;
+	local aktienprozentwert;
+	
+	if(prozent:find('+'))then
+		opr 			  = prozent:sub(2, #prozent - 1); 
+		aktienprozentwert = ((price*opr)/100);
+		aktienprice       = price + aktienprozentwert;
+	end
+	
+	if(getPlayerMoney(player) >= aktienprice)then
+		if getElementData(player, unternehmen) then
+			setElementData(player, unternehmen, getElementData(player, unternehmen) + 1);
+		else
+			setElementData(player, unternehmen, 1);
+		end
+		setPlayerMoney(player, getPlayerMoney(player) - aktienprice);
+		outputChatBox("Du hast dir 1 Aktie von "..unternehmen.." Gekauft!", player, 0, 125, 0);
+	else
+		outputChatBox("Du hast nicht genug Geld!", player, 125, 0, 0);
+	end
+end)
+
 
 function refreshAktien(searchname)
 
-	local Symbol 			  = AktienVars[searchname].Symbol;
-	local Name   			  = AktienVars[searchname].Name;
-	local LastTradePriceOnly  = getAktienData(Symbol, "LastTradePriceOnly");
-	local AktienChangeProzent = getAktienData(Symbol, "AktienChangeProzent");
-	local LastTradeDate 	  = getAktienData(Symbol, "LastTradeDate");
+	local Symbol 			   = AktienVars[searchname].Symbol;
+	local Name   			   = AktienVars[searchname].Name;
 	
-	if(LastTradePriceOnly ~= nil and AktienChangeProzent ~= nil and LastTradeDate ~= nil)then 
-		
-		outputDebugString("@function refreshAktien(...): by "..Symbol.." dont found aktien variables!");
-		
-		if(isTimer(AktienVars[searchname].RefreshTimer))then
-			killTimer(AktienVars[searchname].RefreshTimer);
-		end
-		return;
-	end
+	setAktienData(Symbol, "LastTradePriceOnly");
+	setAktienData(Symbol, "PercentChange");
+	
+	local LastTradePriceOnly  = aktienRefreshTable[Symbol]["LastTradePriceOnly"];
+	local ChangeAktienProzent = aktienRefreshTable[Symbol]["PercentChange"];
 	
 	AktienVars[searchname] = {
 	
 		Name  			    = Name,
 		Symbol			    = Symbol,
 		LastTradePriceOnly  = LastTradePriceOnly,
-		AktienChangeProzent = AktienChangeProzent,
-		LastTradeDate  		= LastTradeDate,	
+		ChangeAktienProzent = ChangeAktienProzent,
 	}
 	outputDebugString("Aktien-Unternehmen: "..Name.." Tabelle wurde Aktuallisiert."); -- Lediglich eine Debug-Ausgabe.
 end
 
-function getAktienData(symbol, variable)
+function setAktienData(symbol, variable)
 	
 	assert(symbol,   "@function getAktienData(...): Symbol is not a string!");
 	assert(variable, "@function getAktienData(...): variable is not a string!");
@@ -117,10 +152,7 @@ function getAktienData(symbol, variable)
 			local json  = fromJSON(data);
 			json_object = json["query"]["results"]["quote"];
 			
-			if(json_object[variable])then
-				return json_object[variable];
-			end
+			aktienRefreshTable[symbol][variable] = json_object[variable];
 		end
 	end, "", false, getRootElement());
-	return nil;
 end

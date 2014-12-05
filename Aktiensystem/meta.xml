@@ -1,4 +1,16 @@
 <meta>
-	<script src="aktien_server.lua"/>
-	<script src="aktien_client.lua" type="client"/>
+	<info author="MulTi"/>
+	
+		<script src="dxclass/client.class.lua" type="client"/>
+		<script src="dxclass/client.userful.lua" type="client"/>
+
+		<script src="aktien_server.lua" />
+		<script src="aktien_client.lua" type="client"/>
+		
+		<script src="aktien_gui.lua" type="client"/>
+		
+		<file src="images/goog.png"/>
+		<file src="images/fb.png"/>
+		<file src="images/yhoo.png"/>
+		
 </meta>

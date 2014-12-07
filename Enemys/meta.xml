@@ -1,0 +1,12 @@
+<meta>
+	<oop>true</oop>
+	
+	<script src="Funktionen/sMain.lua"      type="server"/>
+	<script src="Funktionen/sAnimation.lua" type="server"/>
+	<script src="Funktionen/cAnimation.lua" type="client"/>
+
+	
+	<script src="Klassen/sPlayer.lua" 		  type="server"/>
+	<script src="Klassen/sManager.lua" 		  type="server"/>
+	<script src="Klassen/cManager.lua" 		  type="client"/>
+</meta>

@@ -1,0 +1,7 @@
+Enemeys-Konzept:
+
+Hier rum handelt es sich das Ped's spawnen die einen Attacktieren aber es nicht um Zombies geht.
+Diese "Enemeys" werden Random Waffen bekommen und alles drum tuen dich zu Töten.
+Dieses System kann man natürlich noch ausbauen mit einen Level-System und noch vielen mehr.
+
+In unserem fall geht es aber nur darum ein wenig über die MTA - Synchronisation zu lernen und ein Klassen Verständniss zu bekommen.

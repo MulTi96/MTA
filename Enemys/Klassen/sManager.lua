@@ -57,9 +57,9 @@ end
 function EnemyServerManager:Destructer()	-- Löscht den Ped aus der Manager & Player Klasse.
 	self.classInheritancePlayer:DestructEnemy(self.Enemy);	-- Greifen auf die Player-Klasse per self verzeichnis zu.
 	removeEventHandler("onPedWasted", self.Enemy, function(...) self.EnemyWasted(...) end);	-- Entfernen den eventHandler wen der Ped stirbt.
-	destroyElement(self.Enemy);				-- Zerstören den Ped.
 	killTimer(self.EnemyFightTimer);		-- Timer entfernung.
 	killTimer(self.EnemyFixRotation);		-- Timer entfernung.
+	destroyElement(self.Enemy);				-- Zerstören den Ped.
 	self = nil;								-- Löschen der self instanz.
 end
 

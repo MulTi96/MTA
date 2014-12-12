@@ -19,7 +19,7 @@ function Player:Construct(client)
 	addEventHandler("onPlayerQuit", root, function(...) self:Quit(...) end);
 end
 
-function Player:Quit(source)
+function Player:Quit()
 	if(source == self.Client)then
 		self:Destructer();
 	end

@@ -6,7 +6,7 @@ MySQLSettings      = {
 	["queryAttemps"] = 10	-- Wie oft ein Query ausgefuert werden soll bis er abbricht.
 }
 
-function MySQL:createConnection(typ, database, host, username, password, datachar)	-- Neue Connection: [connection] = MySQL:createConnection(typ = "mysql" or "sqlite", database = "datenbankName", username = "datenbankUsername", password = "datenbankPassword", datachar = "share=0" or "share=1")
+function MySQL:createConnection(typ, database, host, username, password, datachar)
 
 	local self 					= {};
 	setmetatable(self, {__index = MySQL});
@@ -24,7 +24,7 @@ end
 dbConnection = MySQL:createConnection("mysql", "localhost", "root", "test123", "share=1") -- Beispiel Connection.
 
 
-function MySQL:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, WhereBlock, WhereElement)	-- Beispiel: MySQL:setDatabaseQuery("userdata", "name", "MulTi", "name", "Hans") -- Er ändert den Namen von Hans in MulTi 
+function MySQL:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, WhereBlock, WhereElement)	
 	
 	assert(DatabaseTable,  "MySQL-Klasse(setDatabaseQuery(...)): DatabaseTable is nil or false!");
 	assert(DatabaseColumn, "MySQL-Klasse(setDatabaseQuery(...)): DatabaseColumn is nil or false!");
@@ -42,7 +42,7 @@ function MySQL:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, Whe
 end
 
 
-function MySQL:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, WhereElement)	-- Beispiel: MySQL:getDatabaseQuery("userdata", "name", "money", "MulTi") -- Wir fragen vom Spieler MulTi das Geld über den Namen von ihm ab.
+function MySQL:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, WhereElement)	
 	
 	assert(DatabaseTable,  "MySQL-Klasse(getDatabaseQuery(...)): DatabaseTable is nil or false!");
 	assert(DatabaseColumn, "MySQL-Klasse(getDatabaseQuery(...)): DatabaseColumn is nil or false!");
@@ -62,7 +62,7 @@ function MySQL:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, Where
 end
 
 
-function MySQL:RunQuery(QueryString)		-- Einfache RunQuery Funktion die einen Query ueber den String ausfuehrt.
+function MySQL:RunQuery(QueryString)		
 	assert(QueryString,  "MySQL-Klasse(RunQuery(...)): QueryString is nil or false!");
 	
 	self.tempQuery  = self.Connection:query(QueryString);

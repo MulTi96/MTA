@@ -5,14 +5,15 @@ SpawnpointsFire = {
 	
 }
 
-setTimer(function()
-	local rnd  = math.random(1, #SpawnpointsFire);
+addEvent("onServerStartFire", true)
+addEventHandler("onServerStartFire", root, function()
 	
-	if SpawnpointsFire[rnd] then
+	local rnd = math.random(1, #SpawnpointsFire);
+	
+	if(SpawnpointsFire[rnd])then
 		local data = SpawnpointsFire[rnd];
-		local fire = createFire(data.x, data.y, data.z, data.size);
+		createFire(data.x, data.y, data.z, data.size);
 		
 		triggerServerEvent("outputFire", root, data.x, data.y, data.z);
 	end
-	
-end, 1000, 0);
+end)

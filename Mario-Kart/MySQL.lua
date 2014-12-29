@@ -29,7 +29,7 @@ function MySQL:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, Whe
 	assert(DatabaseTable,  "MySQL-Klasse(setDatabaseQuery(...)): DatabaseTable is nil or false!");
 	assert(DatabaseColumn, "MySQL-Klasse(setDatabaseQuery(...)): DatabaseColumn is nil or false!");
 	assert(SetColumnRow,   "MySQL-Klasse(setDatabaseQuery(...)): SetColumnRow is nil or false!");
-	assert(WhereBlock, 	   "MySQL-Klasse(setDatabaseQuery(...)): WhereBlock is nil or false!");
+	assert(WhereBlock,     "MySQL-Klasse(setDatabaseQuery(...)): WhereBlock is nil or false!");
 	assert(WhereElement,   "MySQL-Klasse(setDatabaseQuery(...)): WhereElement is nil or false!");
 	
 	self.tempQuery = self.Connection:query("UPDATE "..DatabaseTable.." SET '"..DatabaseColumn.."' = '"..SetColumnRow.."' WHERE "..WhereBlock.." = '"..WhereElement.."'");
@@ -42,11 +42,11 @@ function MySQL:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, Whe
 end
 
 
-function MySQL:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, WhereElement)	-- Beispiel: MySQL:getDatabaseQuery("userdata", "name", "money", "MulTi") -- WIe fragen vom Spieler MulTi das Geld über den Namen von ihm ab.
+function MySQL:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, WhereElement)	-- Beispiel: MySQL:getDatabaseQuery("userdata", "name", "money", "MulTi") -- Wir fragen vom Spieler MulTi das Geld über den Namen von ihm ab.
 	
 	assert(DatabaseTable,  "MySQL-Klasse(getDatabaseQuery(...)): DatabaseTable is nil or false!");
 	assert(DatabaseColumn, "MySQL-Klasse(getDatabaseQuery(...)): DatabaseColumn is nil or false!");
-	assert(WhereBlock, 	   "MySQL-Klasse(getDatabaseQuery(...)): WhereBlock is nil or false!");
+	assert(WhereBlock,     "MySQL-Klasse(getDatabaseQuery(...)): WhereBlock is nil or false!");
 	assert(WhereElement,   "MySQL-Klasse(getDatabaseQuery(...)): WhereElement is nil or false!");
 	
 	self.tempQuery  = self.Connection:query("SELECT ?? FROM "..DatabaseTable.." WHERE "..DatabaseColumn.." = ?", WhereBlock, WhereElement)
@@ -70,3 +70,35 @@ function MySQL:RunQuery(QueryString)		-- Einfache RunQuery Funktion die einen Qu
 	
 	return self.tempResult;
 end
+
+
+--[[
+	Erklärung:
+	
+	- [class]:createConnection(...)
+	-> Baut eine einfache Conneacton auf.
+	
+	- [class]:getDatabaseQuery(DatabaseTable, DatabaseColumn, WhereBlock, WhereElement)
+	-> DatabaseTable:  Die Tabelle wie z.B "userdata"
+	-> DatabaseColumn: Über was wir Abfrage wie z.B "name"
+	-> WhereBlock:     Die Spalte was wir haben wollen wie z.B "money"
+	-> WhereElement:   Worüber mit DatabaseColumn zugreifen und vergleichen wie z.B "MulTi"
+	-> Wie fragen also ab wie viel Geld der Spieler mit den Namen MulTi hat.
+	
+	- [class]:setDatabaseQuery(DatabaseTable, DatabaseColumn, SetColumnRow, WhereBlock, WhereElement)
+	-> DatabaseTable:  Die Tabelle wie z.B "userdata"
+	-> DatabaseColumn: Über was wir es setzten wollen wie z.B "name"
+	-> SetColumnRow:   Was wir setzten wollen.
+	-> WhereBlock:     Von welcher spalte es wir ändern wie z.B "name"
+	-> WhereElement:   Von oben DatabaseColumn die Abfrage in unseren fall wollen wir es z.B von "MulTi" ändern.
+	
+	- [class]:RunQuery(QueryString)
+	-> Führt einen einfachen Query aus.
+	
+	
+	
+	Beispiele:
+	Connection erstellen:      [class]:createConnection(...)
+	Geld ausgeben vom Spieler: [class]:getDatabaseQuery("userdata", "name", "money", "MulTi")
+	Namen ändern vom Spieler:  [class]:setDatabaseQuery("userdata", "name", "MulTi", "name", "Hans")
+]]

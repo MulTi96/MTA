@@ -1,4 +1,4 @@
-﻿
+
 Firefighters      = {};
 FirefighersPickup = createPickup(-2026.608, 67.1984, 28.69, 3, 1239, 0);
 
@@ -34,6 +34,21 @@ addCommandHandler("fpos", function(player)
 end)
 ]]--
 
+setTimer(function()
+	triggerServerEvent(root, "onServerStartFire", root);
+end, 3600000, 0)
+
+function isFirefighterSkin(player)
+
+	local model = player:getModel();
+	for i = 1, #FirefighterSkins do 
+		if(FirefighterSkins[i] == model)then
+			return true;
+		end
+	end
+	return false;
+end
+
 addEvent("outputFire", true);
 addEventHandler("outputFire", root, function(x, y, z)
 	local city, zone = getZoneName(x, y, z, true), getZoneName(x, y, z, false);
@@ -41,6 +56,7 @@ addEventHandler("outputFire", root, function(x, y, z)
 end)
 
 for i = 1, #FirefighterVehicles do 
+
 	local data = FirefighterVehicles[i];
 	FirefighterVehicle[i] = createVehicle(407, data.x, data.y, data.z, data.rotx, data.roty, data.rotz);
 	toggleVehicleRespawn(FirefighterVehicle[i], true);
@@ -48,7 +64,20 @@ for i = 1, #FirefighterVehicles do
 	
 	
 	addEventHandler("onVehicleStartEnter", FirefighterVehicle[i], function(player, seat)
+	
+		
+		if(seat == 0)then
+			if isFirefighter(player) then
+				if not(isFirefighterSkin(player))then
+					cancelEvent();
+					outputChatBox("Du hast keinen Feuerwehrmann Skin mehr an!", player, 255, 0, 0);
+					return;
+				end
+			end
+		end
+
 		if(seat == 0 and not isFirefighter(player))then
+
 			cancelEvent();
 			outputChatBox("Du bist kein Feuerwehrmann!", player, 255, 0, 0);
 		end

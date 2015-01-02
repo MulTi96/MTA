@@ -1,4 +1,3 @@
--- Aktienscript[Client] --
 
 
 AktienWindow = guiCreateWindow(0.28, 0.24, 0.45, 0.41, "Aktiensystem", true)
@@ -17,7 +16,6 @@ AktienPayButton = guiCreateButton(0.60, 0.79, 0.34, 0.17, "Aktien Verkaufen", tr
 bindKey("f5", "down", function(_, stn)
 	if(stn == "down")then
 		if(guiGetVisible(AktienWindow) == true)then
-			
 			showCursor(false);
 			guiSetVisible(AktienWindow, false)
 		else
@@ -25,6 +23,32 @@ bindKey("f5", "down", function(_, stn)
 		end
 	end
 end)
+
+addEventHandler("onClientGUIClick", AktienBuyButton, function()
+	local cRow = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 1);
+	if(cRow and cRow ~= -1)then
+		local cPrice   = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 2);
+		local cProzent = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 3);
+		
+		if(cPrice and cProzent)then
+			triggerServerEvent("buyAktie", localPlayer, localPlayer, cRow, cPrice, cProzent);
+		end
+	end
+end,false)
+
+
+addEventHandler("onClientGUIClick", AktienPayButton, function()
+	local cRow = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 1);
+	if(cRow and cRow ~= -1)then
+		local cPrice   = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 2);
+		local cProzent = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 3);
+		
+		if(cPrice and cProzent)then
+			triggerServerEvent("payAktie", localPlayer, localPlayer, cRow, cPrice, cProzent);
+		end
+	end
+end,false)
+
 
 addEvent("loadClientAktien", true)
 addEventHandler("loadClientAktien", localPlayer, function(aktien_table)
@@ -40,17 +64,3 @@ addEventHandler("loadClientAktien", localPlayer, function(aktien_table)
 		guiGridListSetItemText(AktienGridlist, row, AktienProzentSatz, data.ChangeAktienProzent, false, false);
 	end
 end)
-
-addEventHandler("onClientGUIClick", AktienBuyButton, function()
-		
-	local cRow = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 1)
-		
-	if cRow and cRow ~= -1 then
-		local cPrice   = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 2)
-		local cProzent = guiGridListGetItemText(AktienGridlist, guiGridListGetSelectedItem(AktienGridlist), 3)
-		
-		if(cPrice and cProzent)then
-			triggerServerEvent("buyAktie", localPlayer, localPlayer, cRow, cPrice, cProzent);
-		end
-	end
-end, false)

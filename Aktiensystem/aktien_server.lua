@@ -93,7 +93,7 @@ addEventHandler("payAktie", root, function(player, unternehmen, price, prozent, 
 	if(getElementData(player, unternehmen))then
 		if(getElementData(player, unternehmen) >= aktien)then
 			local opr;
-			local aktienprice;
+			local aktienprice = price;
 			local aktienprozenwert;
 			
 			if(prozent:find('-'))then
@@ -127,7 +127,7 @@ addEvent("buyAktie", true)
 addEventHandler("buyAktie", root, function(player, unternehmen, price, prozent, aktien)
 	
 	local opr;
-	local aktienprice;
+	local aktienprice = price;
 	local aktienprozenwert;
 	
 	if(prozent:find('+'))then -- Aufgrund desen könnte man Geldbuggen da wen man sie für 500$ kauft und der prozentwert +0,25% ist mehr wieder bekommt als der wert beträgt.

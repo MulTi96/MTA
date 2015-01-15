@@ -1,0 +1,14 @@
+<meta>
+	<info author="MulTi" version="0.2"/>
+		<oop>true</oop>
+		
+		<file src="gui/files/file.png"/>
+		
+		<script src="classes/sDownload.lua" type="server"/>
+		<script src="classes/cDownload.lua" type="client" cache="false"/>
+		
+		<script src="gui/cDownloadGUI.lua" type="client" cache="false"/>
+		
+	
+		
+</meta>
